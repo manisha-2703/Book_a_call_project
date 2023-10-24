@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Call</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('Pictures/background.png'); 
+            background-size: cover;
+            background-position: top;
+            font-family: sans-serif;
+        }
+        .brand-name {
+            color: #611540;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .form-wrap {
+            background: rgba(218, 205, 162, 0.75);
+            border: 2px solid #f1eded;
+            padding: 40px 20px;
+            position: fixed;
+            left: 50%;
+            top: 38%;
+            transform: translate(-50%, -50%);
+        }
+        h3 {
+            color: #050505;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
+        }
+        h5 {
+            color: #070707;
+        }
+        label {
+            color: #070707;
+        }
+        input {
+            background: none;
+            border: 1px solid #070707;
+            border-radius: 3px;
+            padding: 6px 15px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #0c0c0c;
+        }
+        input[type="button"] {
+            background: #bac675;
+            border: 0;
+            cursor: pointer;
+            color: #3e3d3d;
+        }
+        input[type="button"]:hover {
+            background: #a4b15c;
+            transition: .6s;
+        }
+        ::placeholder {
+            color: #0b0b0b;
+        }
+    </style>
+</head>
+<body>
+    <span class="brand-name">Yav</span>
+    <div class="container mt-5">
+        <div class="form-wrap">
+            <form id="callForm">
+                <h3 class="text-center">Book a Call</h3>
+                <h5 class="text-center text-muted">Book a call and our representative will call you within 1hr of selected time</h5>
+                <div class="form-group">
+                    <label for="fname">Name:</label>
+                    <input type="text" class="form-control" id="fname" name="fname" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Id:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="Phone">Phone Number:</label>
+                    <input type="number" class="form-control" id="Phone" name="Phone">
+                </div>
+                <div class="form-group row">
+                    <div class="col">
+                        <label for="datetime-local">Date and Time:</label>
+                        <input type="datetime-local" class="form-control" id="datetime-local" name="datetime-local">
+                    </div>
+                    <div class="col">
+                        <label for="time">Time:</label>
+                        <input type="time" class="form-control" id="time" name="time">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="submitBtn">GET A CALL</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+     document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('callForm');
+    const submitButton = document.getElementById('submitBtn');
+    const userListContainer = document.createElement('div');  // Create a container for user details
+    userListContainer.id = 'userList';
+    document.body.appendChild(userListContainer);  // Append it to the body
+
+    // Function to display user details
+    function displayUserDetails(userDetailsList) {
+        userListContainer.innerHTML = '';
+
+        userDetailsList.forEach((userDetails, index) => {
+            const userDiv = document.createElement('div');
+            userDiv.classList.add('user-details');
+
+            const nameParagraph = document.createElement('p');
+            nameParagraph.textContent = `Name: ${userDetails.name}`;
+
+            const emailParagraph = document.createElement('p');
+            emailParagraph.textContent = `Email: ${userDetails.email}`;
+
+            const phoneParagraph = document.createElement('p');
+            phoneParagraph.textContent = `Phone: ${userDetails.phone}`;
+
+            const dateTimeParagraph = document.createElement('p');
+            dateTimeParagraph.textContent = `Date and Time: ${userDetails.dateTime} ${userDetails.time}`;
+
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.addEventListener('click', () => {
+              
+                document.getElementById('fname').value = userDetails.name;
+                document.getElementById('email').value = userDetails.email;
+                document.getElementById('Phone').value = userDetails.phone;
+                document.getElementById('datetime-local').value = userDetails.dateTime;
+                document.getElementById('time').value = userDetails.time;
+
+                
+                userDetailsList.splice(index, 1);
+                localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
+                displayUserDetails(userDetailsList);
+            });
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => {
+                userDetailsList.splice(index, 1);
+                localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
+                displayUserDetails(userDetailsList);
+            });
+
+            userDiv.appendChild(nameParagraph);
+            userDiv.appendChild(emailParagraph);
+            userDiv.appendChild(phoneParagraph);
+            userDiv.appendChild(dateTimeParagraph);
+            userDiv.appendChild(editButton);
+            userDiv.appendChild(deleteButton);
+
+            userListContainer.appendChild(userDiv);
+        });
+    }
+
+    function handleFormSubmit(event) {
+        const name = document.getElementById('fname').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('Phone').value;
+        const dateTime = document.getElementById('datetime-local').value;
+        const time = document.getElementById('time').value;
+
+        let userDetailsList = JSON.parse(localStorage.getItem('userDetails')) || [];
+
+        const userDetails = {
+            name: name,
+            email: email,
+            phone: phone,
+            dateTime: dateTime,
+            time: time
+        };
+
+        userDetailsList.push(userDetails);
+
+        localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
+
+        displayUserDetails(userDetailsList);
+        form.reset();
+    }
+
+    submitButton.addEventListener('click', handleFormSubmit);
+
+    const existingUserDetails = JSON.parse(localStorage.getItem('userDetails')) || [];
+    displayUserDetails(existingUserDetails);
+});
+
+
+
+    </script>
+</body>
+</html>

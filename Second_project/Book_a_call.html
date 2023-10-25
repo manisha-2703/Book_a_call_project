@@ -108,6 +108,7 @@
 
             function displayUserDetails(userDetailsList) {
                 userListContainer.innerHTML = '';
+               
 
                 if (Array.isArray(userDetailsList)) {
                     userDetailsList.forEach((userDetails, index) => {
@@ -160,6 +161,20 @@
                 }
             }
 
+            function fetchUserDetails() {
+                axios.get("https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment")
+                    .then((response) => {
+                        const userDetailsList = response.data;
+                        displayUserDetails(userDetailsList);
+                    })
+                    .catch((err) => {
+                        console.log('Error fetching user details:', err);
+                    });
+            }
+
+            
+            fetchUserDetails();
+
 
     function handleFormSubmit(event) {
         const name = document.getElementById('fname').value;
@@ -179,7 +194,7 @@
         };
 
         userDetailsList.push(userDetails);
-        axios.post("https://crudcrud.com/api/2938c147e0ff4d2286906719b99ac9de/appointment",userDetails)
+        axios.post("https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment",userDetails)
         .then((response)=>{
             console.log('Axios Response:', response);
             displayUserDetails(response.data);

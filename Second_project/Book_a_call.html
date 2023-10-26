@@ -98,126 +98,148 @@
 
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"></script>
 
-    <script>
-     document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('callForm');
-            const submitButton = document.getElementById('submitBtn');
-            const userListContainer = document.createElement('div');
-            userListContainer.id = 'userList';
-            document.body.appendChild(userListContainer);
+    
 
-            function displayUserDetails(userDetailsList) {
-                userListContainer.innerHTML = '';
-               
+<script>
+    let userDetailsList = [];
 
-                if (Array.isArray(userDetailsList)) {
-                    userDetailsList.forEach((userDetails, index) => {
-                        const userDiv = document.createElement('div');
-                        userDiv.classList.add('user-details');
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('callForm');
+    const submitButton = document.getElementById('submitBtn');
+    const userListContainer = document.createElement('div');
+    userListContainer.id = 'userList';
+    document.body.appendChild(userListContainer);
 
-                        const nameParagraph = document.createElement('p');
-                        nameParagraph.textContent = `Name: ${userDetails.name}`;
+    function displayUserDetails() {
+        userListContainer.innerHTML = '';
 
-                        const emailParagraph = document.createElement('p');
-                        emailParagraph.textContent = `Email: ${userDetails.email}`;
+        if (Array.isArray(userDetailsList)) {
+            userDetailsList.forEach((userDetails, index) => {
+                const userDiv = document.createElement('div');
+                userDiv.classList.add('user-details');
 
-                        const phoneParagraph = document.createElement('p');
-                        phoneParagraph.textContent = `Phone: ${userDetails.phone}`;
 
-                        const dateTimeParagraph = document.createElement('p');
-                        dateTimeParagraph.textContent = `Date and Time: ${userDetails.dateTime} ${userDetails.time}`;
+                    const nameParagraph = document.createElement('p');
+                    nameParagraph.textContent = `Name: ${userDetails.name}`;
 
-                        const editButton = document.createElement('button');
-                        editButton.textContent = 'Edit';
-                        editButton.addEventListener('click', () => {
-                            document.getElementById('fname').value = userDetails.name;
-                            document.getElementById('email').value = userDetails.email;
-                            document.getElementById('Phone').value = userDetails.phone;
-                            document.getElementById('datetime-local').value = userDetails.dateTime;
-                            document.getElementById('time').value = userDetails.time;
+                    const emailParagraph = document.createElement('p');
+                    emailParagraph.textContent = `Email: ${userDetails.email}`;
 
-                            userDetailsList.splice(index, 1);
-                            localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
-                            displayUserDetails(userDetailsList);
-                        });
+                    const phoneParagraph = document.createElement('p');
+                    phoneParagraph.textContent = `Phone: ${userDetails.phone}`;
 
-                        const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'Delete';
-                        deleteButton.addEventListener('click', () => {
-                            userDetailsList.splice(index, 1);
-                            localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
-                            displayUserDetails(userDetailsList);
-                        });
+                    const dateTimeParagraph = document.createElement('p');
+                    dateTimeParagraph.textContent = `Date and Time: ${userDetails.dateTime} ${userDetails.time}`;
 
-                        userDiv.appendChild(nameParagraph);
-                        userDiv.appendChild(emailParagraph);
-                        userDiv.appendChild(phoneParagraph);
-                        userDiv.appendChild(dateTimeParagraph);
-                        userDiv.appendChild(editButton);
-                        userDiv.appendChild(deleteButton);
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Edit';
+                    editButton.addEventListener('click', () => {
+                        document.getElementById('fname').value = userDetails.name;
+                        document.getElementById('email').value = userDetails.email;
+                        document.getElementById('Phone').value = userDetails.phone;
+                        document.getElementById('datetime-local').value = userDetails.dateTime;
+                        document.getElementById('time').value = userDetails.time;
 
-                        userListContainer.appendChild(userDiv);
-                    });
-                }
-            }
-
-            function fetchUserDetails() {
-                axios.get("https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment")
-                    .then((response) => {
-                        const userDetailsList = response.data;
+                        userDetailsList.splice(index, 1);
+                        localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
                         displayUserDetails(userDetailsList);
-                    })
-                    .catch((err) => {
-                        console.log('Error fetching user details:', err);
                     });
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.addEventListener('click', () => {
+                        deleteUser(userDetails._id); // Call the deleteUser function with the _id
+                    });
+
+                    const deleteIcon = document.createElement('i');
+                    deleteIcon.className = 'fa fa-trash';
+                    deleteIcon.style.marginLeft = '10px';
+                    deleteIcon.style.cursor = 'pointer';
+                    deleteIcon.addEventListener('click', () => {
+                        deleteUser(userDetails._id); // Call the deleteUser function with the _id
+                    });
+
+                    userDiv.appendChild(nameParagraph);
+                    userDiv.appendChild(emailParagraph);
+                    userDiv.appendChild(phoneParagraph);
+                    userDiv.appendChild(dateTimeParagraph);
+                    userDiv.appendChild(editButton);
+                    userDiv.appendChild(deleteButton); // or deleteIcon
+                    userListContainer.appendChild(userDiv);
+                });
             }
+        }
 
-            
-            fetchUserDetails();
+        function fetchUserDetails() {
+            axios.get("https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment")
+                .then((response) => {
+                    userDetailsList = response.data; // Update userDetailsList
+                    displayUserDetails();
+                })
+                .catch((err) => {
+                    console.log('Error fetching user details:', err);
+                });
+        }
+
+        fetchUserDetails();
 
 
-    function handleFormSubmit(event) {
-        const name = document.getElementById('fname').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('Phone').value;
-        const dateTime = document.getElementById('datetime-local').value;
-        const time = document.getElementById('time').value;
+        function deleteUser(userId) {
+            axios.delete(`https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment/${userId}`)
+                .then((response) => {
+                    console.log('User deleted:', response);
 
-        let userDetailsList = JSON.parse(localStorage.getItem('userDetails')) || [];
+                    // Remove the user detail from the displayed list
+                    userDetailsList = userDetailsList.filter(user => user._id !== userId);
+                    localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
+                    displayUserDetails();
+                })
+                .catch((err) => {
+                    console.log('Error deleting user:', err);
+                });
+        }
+        function handleFormSubmit(event) {
+            const name = document.getElementById('fname').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('Phone').value;
+            const dateTime = document.getElementById('datetime-local').value;
+            const time = document.getElementById('time').value;
 
-        const userDetails = {
-            name: name,
-            email: email,
-            phone: phone,
-            dateTime: dateTime,
-            time: time
-        };
+            let userDetailsList = JSON.parse(localStorage.getItem('userDetails')) || [];
 
-        userDetailsList.push(userDetails);
-        axios.post("https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment",userDetails)
-        .then((response)=>{
-            console.log('Axios Response:', response);
-            displayUserDetails(response.data);
-            
-        })
-        .catch((err)=>{
-            console.log('Axios Error:', err);
-        })
+            const userDetails = {
+                name: name,
+                email: email,
+                phone: phone,
+                dateTime: dateTime,
+                time: time
+            };
 
-        localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
+            axios.post("https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment", userDetails)
+                .then((response) => {
+                    console.log('Axios Response:', response);
+                    userDetails._id = response.data._id; // Store the _id received from the API
+                    userDetailsList.push(userDetails);
+                    localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
+                    displayUserDetails(userDetailsList);
+                })
+                .catch((err) => {
+                    console.log('Axios Error:', err);
+                });
 
-        displayUserDetails(userDetailsList);
-        form.reset();
-    }
+            displayUserDetails(userDetailsList);
+            form.reset();
+        }
 
-    submitButton.addEventListener('click', handleFormSubmit);
+        submitButton.addEventListener('click', handleFormSubmit);
 
-    const existingUserDetails = JSON.parse(localStorage.getItem('userDetails')) || [];
-    displayUserDetails(existingUserDetails);
-});
+        const existingUserDetails = JSON.parse(localStorage.getItem('userDetails')) || [];
+        userDetailsList = existingUserDetails; // Initialize userDetailsList
+        displayUserDetails();
+        });
 
-// book an appointment
+    // book an appointment
 
-    </script>
+</script>
 </body>
 </html>

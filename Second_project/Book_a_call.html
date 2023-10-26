@@ -102,6 +102,7 @@
 
 <script>
     let userDetailsList = [];
+    let editUserIndex = -1;
 
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('callForm');
@@ -112,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayUserDetails() {
         userListContainer.innerHTML = '';
+        
 
         if (Array.isArray(userDetailsList)) {
             userDetailsList.forEach((userDetails, index) => {
@@ -169,9 +171,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         }
+        function populateFormWithUserData(userDetails) {
+            document.getElementById('fname').value = userDetails.name;
+            document.getElementById('email').value = userDetails.email;
+            document.getElementById('Phone').value = userDetails.phone;
+            document.getElementById('datetime-local').value = userDetails.dateTime;
+            document.getElementById('time').value = userDetails.time;
+        }
 
         function fetchUserDetails() {
-            axios.get("https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment")
+            axios.get("https://crudcrud.com/api/c40164c54d54402fa740f39625ba7b64/appointment")
                 .then((response) => {
                     userDetailsList = response.data; // Update userDetailsList
                     displayUserDetails();
@@ -185,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         function deleteUser(userId) {
-            axios.delete(`https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment/${userId}`)
+            axios.delete(`https://crudcrud.com/api/c40164c54d54402fa740f39625ba7b64/appointment/${userId}`)
                 .then((response) => {
                     console.log('User deleted:', response);
 
@@ -205,29 +214,38 @@ document.addEventListener('DOMContentLoaded', function () {
             const dateTime = document.getElementById('datetime-local').value;
             const time = document.getElementById('time').value;
 
-            let userDetailsList = JSON.parse(localStorage.getItem('userDetails')) || [];
+            if (editUserIndex !== -1) {
+                // Edit user details if editUserIndex is not -1
+                userDetailsList[editUserIndex] = {
+                    ...userDetailsList[editUserIndex],
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    dateTime: dateTime,
+                    time: time,
+                };
+                editUserIndex = -1; // Reset the edit index
+            } else {
+                // Add new user details
+                userDetailsList.push({
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    dateTime: dateTime,
+                    time: time,
+                });
+            }
 
-            const userDetails = {
-                name: name,
-                email: email,
-                phone: phone,
-                dateTime: dateTime,
-                time: time
-            };
-
-            axios.post("https://crudcrud.com/api/623dbff867a8400ebf85b2a9491f593e/appointment", userDetails)
+            axios.post("https://crudcrud.com/api/c40164c54d54402fa740f39625ba7b64/appointment", userDetailsList)
                 .then((response) => {
-                    console.log('Axios Response:', response);
-                    userDetails._id = response.data._id; // Store the _id received from the API
-                    userDetailsList.push(userDetails);
-                    localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
-                    displayUserDetails(userDetailsList);
+                    userDetailsList = response.data; // Update userDetailsList with the modified data
+                    displayUserDetails(); // Update the displayed user details
                 })
                 .catch((err) => {
                     console.log('Axios Error:', err);
                 });
 
-            displayUserDetails(userDetailsList);
+            localStorage.setItem('userDetails', JSON.stringify(userDetailsList));
             form.reset();
         }
 

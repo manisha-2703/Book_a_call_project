@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.inventory {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+label, input, button {
+    display: block;
+    margin: 10px 0;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f9f9f9;
+}
+
+h1, h2 {
+    text-align: center;
+}

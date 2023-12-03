@@ -1,4 +1,27 @@
-const http = require('http');
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+const loginRoutes = require('./Route.js/login');
+const messageRoutes = require('./Route.js/messages');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use('/login', loginRoutes);
+app.use('/messages', messageRoutes);
+
+app.use((req, res, next) => {
+    res.status(404).send('<h1>Page not found</h1>');
+});
+
+const PORT = process.env.PORT || 7000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+
+/* const http = require('http');
 const fs = require('fs');
 
 http.createServer(function(req, res) {
@@ -46,3 +69,5 @@ http.createServer(function(req, res) {
         });
     }
 }).listen(4000);
+ */
+

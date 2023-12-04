@@ -5,12 +5,15 @@ const app = express();
 
 const adminRoutes = require('./Routes/admin.js');
 const shopRoutes = require('./Routes/shop.js');
+const contactRoutes= require('./Routes/contactus.js');
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(express.static(path.join(__dirname,'views', 'public')));
 
 app.use(adminRoutes);
 app.use(shopRoutes);
+app.use(contactRoutes);
  /* '/shop',  '/admin',*/
 
 app.use((req, res, next) => {

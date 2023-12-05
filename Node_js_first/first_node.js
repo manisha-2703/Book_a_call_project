@@ -16,7 +16,7 @@ const contactRoutes= require('./Routes/contactus.js');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'views', 'public')));
 
-app.use(adminRoutes);
+app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(contactRoutes);
 

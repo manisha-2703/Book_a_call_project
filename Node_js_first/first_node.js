@@ -2,7 +2,9 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const errorcontroller =require('./controllers/error');
+const db=require('./util/database.js')
 
 const app = express();
 
@@ -12,6 +14,8 @@ app.set('views', path.join(__dirname, 'Views'));
 const adminRoutes = require('./Routes/admin');
 const shopRoutes = require('./Routes/shop');
 const contactRoutes= require('./Routes/contactus.js');
+
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'views', 'public')));

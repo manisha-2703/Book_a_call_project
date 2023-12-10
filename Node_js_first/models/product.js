@@ -18,7 +18,13 @@ module.exports = class Product {
   }
 
   static deleteById(id){
-    return db.execute('delete from products where products.id=?',[id]);
+    return db.execute('delete from products where products.id=?',[id])
+    .then(result => {
+      return this.fetchAll();
+    })
+    .catch(err => {
+      console.log(err);
+    });;
   }
 
 

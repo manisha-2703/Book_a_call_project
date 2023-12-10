@@ -77,8 +77,12 @@ exports.getProducts = (req, res, next) => {
 exports.postDeleteProduct = (req, res, next)=>{
   const prodId = req.body.productId;
   Product.deleteById(prodId)
-  .then(()=>{ 
-    res.render('admin/products');
+  .then(([rows,fieldData])=>{ 
+    res.render('admin/products',{
+      prods: rows,
+      pageTitle: 'Admin Products', 
+      path: '/admin/products'
+    });
  })
  .catch(err =>{
    console.log(err);

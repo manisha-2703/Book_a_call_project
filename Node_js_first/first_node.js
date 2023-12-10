@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const errorcontroller =require('./controllers/error');
-const db=require('./util/database.js')
+const sequelize=require('./util/database.js')
 
 const app = express();
 
@@ -25,6 +25,12 @@ app.use(shopRoutes);
 app.use(contactRoutes);
 
 app.use(errorcontroller.get404);
+
+sequelize.sync().then(result=>{
+    //console.log(result);
+}).catch(err=>{
+    console.log(err);
+})
 
 app.listen(3000);
 

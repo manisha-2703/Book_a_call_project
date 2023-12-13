@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Call</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="form-wrap">
+            <form id="callForm">
+                <h3 class="text-center">Book a Call</h3>
+                <h5 class="text-center text-muted">Book a call, and our representative will call you within 1hr of the selected time</h5>
+                <div class="form-group">
+                    <label for="fname">Name:</label>
+                    <input type="text" class="form-control" id="fname" name="fname" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Id:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="Phone">Phone Number:</label>
+                    <input type="number" class="form-control" id="Phone" name="Phone">
+                </div>
+                <div class="form-group row">
+                    <div class="col">
+                        <label for="date">Date and Time:</label>
+                        <input type="date" class="form-control" id="date" name="date">
+                    </div>
+                    <div class="col">
+                        <label for="time">Time:</label>
+                        <input type="time" class="form-control" id="time" name="time">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="submitBtn">GET A CALL</button>
+            </form>
+
+            <!-- User List Container -->
+            <div id="userListContainer" class="mt-4">
+                <h3 class="text-center">User List</h3>
+                <!-- User details will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+    <!-- Add your custom script -->
+    <script src="/script.js"></script>
+</body>
+</html>

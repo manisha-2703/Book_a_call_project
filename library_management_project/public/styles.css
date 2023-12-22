@@ -5,7 +5,7 @@ body {
   }
   
   header {
-    background-color: #333;
+    background-color: #083e18;
     color: white;
     text-align: center;
     padding: 1em;
@@ -16,15 +16,39 @@ body {
     justify-content: center;
     margin-top: 1em;
   }
-  
+  h2{
+    margin-left: 1em;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
   section {
+    margin: 1em;
+  } 
+  #booksBorrowed {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+  
+  #booksBorrowed .book {
+    color: #ddd;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #1a1c1b;
+    padding: 1em;
+    margin-bottom: 1em;
+     
+  }
+  
+  #returnedBooks{
+    background-color: rgb(190, 226, 147);
     margin: 1em;
   }
   
   .book {
     border: 1px solid #ddd;
     padding: 1em;
-    margin-bottom: 1em;
+    margin: 1em;
   }
   
   .payFineBtn {

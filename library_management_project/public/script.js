@@ -31,6 +31,8 @@ function returnBook(id) {
 }
 
 function payFine(id) {
+  console.log('payFine function called with id:', id);
+
   axios.post('http://localhost:3000/library/payfine', { id })
     .then(response => {
       const data = response.data;
@@ -42,6 +44,7 @@ function payFine(id) {
       alert('Error paying fine');
     });
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
   axios.get('http://localhost:3000/library/borrowed')
@@ -60,7 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
             <p>Book Name: ${book.title}</p>
             <p>Borrowed Time: ${book.borrowedAt}</p>
             <p>Return Time: ${book.returnedToBe}</p>
-            <p>Pay Fine: ${book.fine}</p>
+            <p>Fine: ${book.fine}</p>
+            ${book.fine > 0 ? `<button onclick="payFine(${book.id})" class="payFineBtn">Pay Fine</button>` : ''}
             <button onclick="returnBook(${book.id})" class="returnBtn">Return Book</button>
           `;
 

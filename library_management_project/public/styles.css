@@ -10,7 +10,12 @@ body {
     text-align: center;
     padding: 1em;
   }
-  
+  footer {
+    background-color: #083e18;
+    color: white;
+    text-align: center;
+    padding: 0.5em;
+  }
   form {
     display: flex;
     justify-content: center;

@@ -1,4 +1,3 @@
-// controllers/expenseController.js
 const Expense = require('../Model/expense');
 
 exports.getAllExpenses = async (req, res) => {

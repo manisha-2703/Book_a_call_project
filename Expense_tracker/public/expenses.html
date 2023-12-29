@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="form-wrap">
+            <form id="expenseForm">
+                <div class="form-group form-check-inline">
+                    <label for="expense">Expense:</label>
+                    <input type="number" class="form-control" id="expense" name="expense">
+                </div>
+                <div class="form-group form-check-inline">
+                    <label for="description">Description:</label>
+                    <input type="text" class="form-control" id="description" name="description" required>
+                </div>
+                <div class="form-group form-check-inline">
+                    <label for="category">Category:</label>
+                    <select class="form-control" id="category" name="category" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <option value="movie">Movie</option>
+                        <option value="electricity">Electricity</option>
+                        <option value="food">Food</option>
+                        <option value="vacation">Vacation</option>
+                        <option value="rent">Rent Charges</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" id="submitBtn">Add Expense</button>
+            </form>
+
+            <div id="expenseList"></div>
+
+            <!-- Edit Expense Form -->
+            <form id="editExpenseForm" style="display: none;">
+                <input type="hidden" id="editExpenseId" name="id">
+                <div class="form-group form-check-inline">
+                    <label for="editExpense">Expense:</label>
+                    <input type="number" class="form-control" id="editExpense" name="expense">
+                </div>
+                <div class="form-group form-check-inline">
+                    <label for="editDescription">Description:</label>
+                    <input type="text" class="form-control" id="editDescription" name="description" required>
+                </div>
+                <div class="form-group form-check-inline">
+                    <label for="editCategory">Category:</label>
+                    <select class="form-control" id="editCategory" name="category" required>
+                        <option value="movie">Movie</option>
+                        <option value="electricity">Electricity</option>
+                        <option value="food">Food</option>
+                        <option value="vacation">Vacation</option>
+                        <option value="rent">Rent Charges</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" id="updateBtn">Update Expense</button>
+                <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/script.js"></script>
+</body>
+</html>

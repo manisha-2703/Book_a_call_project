@@ -8,15 +8,22 @@ const userRoutes = require('./Routes/user');
 const app = express();
 
 app.use(bodyParser.json());
+
+const Expense = require('./Model/expense');
+const User = require('./Model/user');
+
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/expenses', expenseRoutes);
 app.use('/users', userRoutes);
 
+User.hasMany(Expense);
+Expense.belongsTo(User); 
+
 sequelize.sync()
     .then(() => {
-        console.log('Database synchronized');
+        return User.findByPk(1);
     })
     .catch((error) => {
         console.error('Error syncing database:', error);

@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../Model/user');
 
 exports.signup = async (req, res) => {
@@ -26,6 +27,7 @@ exports.signup = async (req, res) => {
 };
 
 
+
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -42,9 +44,11 @@ exports.login = async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (passwordMatch) {
-            // Passwords match, user is authenticated
-            // You can generate a token or set a session here for authentication
-            res.json({ message: 'Login successful', user });
+            // Passwords match, generate a token
+            const token = jwt.sign({ userId: user.id }, 'adsdsfxfhsgtfhfyhjfyjftxr', { expiresIn: '1h' });
+
+            // Send the token in the response
+            res.json({ token, user });
         } else {
             // Passwords don't match
             res.status(401).json({ error: 'Invalid email or password' });
@@ -54,4 +58,3 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-

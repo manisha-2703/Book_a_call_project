@@ -2,7 +2,7 @@ const Expense = require('../Model/expense');
 
 exports.getAllExpenses = async (req, res) => {
   try {
-    const expenses = await Expense.findAll();
+    const expenses = await Expense.findAll({ where : { UserId: req.user.id}});
     res.json(expenses);
   } catch (error) {
     console.error('Error fetching expenses:', error);
@@ -13,14 +13,17 @@ exports.getAllExpenses = async (req, res) => {
 
 exports.addExpense = async (req, res) => {
   const { expense, description, category } = req.body;
-
+  console.log('Received expense data:', { expense, description, category });
+  
   try {
-    const newExpense = await Expense.create({ expense, description, category });
+    const newExpense = await Expense.create({ expense, description, category, UserId: req.user.id });
+    console.log('New expense created:', newExpense);
     res.json(newExpense);
   } catch (error) {
     console.error('Error adding expense:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+  
 };
 
 

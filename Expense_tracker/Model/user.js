@@ -1,16 +1,17 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../util/database');
+// const Expense = require('./expense');
 
-const User = sequelize.define('user', {
+const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     allowNull: false,
     primaryKey: true,
-    autoIncrement: true,
   },
-  name:{
+  name: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
@@ -23,4 +24,6 @@ const User = sequelize.define('user', {
   },
 });
 
+// User.hasMany(Expense);
+// Expense.belongsTo(User); 
 module.exports = User;

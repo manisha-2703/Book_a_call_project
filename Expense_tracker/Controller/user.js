@@ -2,6 +2,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../Model/user');
 
+const TOKEN_SECRET = 'e7!dMxT#c?UvJ7!PAn*FKNtXAQsfmz!6';
+
+// Function to generate access token
+function generateAccessToken(id) {
+    return jwt.sign({ userId: id }, TOKEN_SECRET);
+}
+
 exports.signup = async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -19,14 +26,15 @@ exports.signup = async (req, res) => {
 
         // Create a new user with the hashed password
         const newUser = await User.create({ name, email, password: hashedPassword });
-        res.json(newUser);
+
+        // Generate token and send it in the response
+        //const token = generateAccessToken(newUser.id);
+        //res.json({ token, user: newUser });
     } catch (error) {
         console.error('Error creating user:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-
-
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
@@ -45,7 +53,7 @@ exports.login = async (req, res) => {
 
         if (passwordMatch) {
             // Passwords match, generate a token
-            const token = jwt.sign({ userId: user.id }, 'adsdsfxfhsgtfhfyhjfyjftxr', { expiresIn: '1h' });
+            const token = generateAccessToken(user.id);
 
             // Send the token in the response
             res.json({ token, user });

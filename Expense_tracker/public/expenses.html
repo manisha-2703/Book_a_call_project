@@ -34,6 +34,12 @@
                 <button type="button" class="btn btn-primary" id="submitBtn">Add Expense</button>
             </form>
             <p id="premiumMessage" style="display: none;">You are a premium user</p>
+            <button id="showLeaderboardBtn" style="display: none;">Show Leaderboard</button>
+
+            <div id="leaderboardContainer" style="display: none;">
+            <h2>Leaderboard</h2>
+            <table class="table" id="leaderboardTable"></table>
+            </div>
             <button id="buyPremiumBtn">Buy Premium</button>
 
             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

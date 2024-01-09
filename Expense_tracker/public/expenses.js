@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const submitButton = document.getElementById('submitBtn');
   const expenseTable = document.getElementById('expenseTable');
   const editForm = document.getElementById('editExpenseForm');
+  const leaderboardContainer = document.getElementById('leaderboardContainer');
 
   function displayExpenses(expenses) {
     // Clear existing table content
@@ -68,18 +69,74 @@ document.addEventListener('DOMContentLoaded', function () {
     expenseTable.appendChild(tableBody);
   }
 
+  function displayLeaderboard(leaderboard) {
+    // Clear existing leaderboard content
+    leaderboardContainer.innerHTML = '';
+
+    // Create leaderboard table
+    const leaderboardTable = document.createElement('table');
+    leaderboardTable.classList.add('leaderboard-table');
+
+    // Create table header
+    const tableHeader = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    const headerNames = ['Serial No', 'Name', 'Total Expense'];
+
+    headerNames.forEach(name => {
+      const headerCell = document.createElement('th');
+      headerCell.textContent = name;
+      headerRow.appendChild(headerCell);
+    });
+
+    tableHeader.appendChild(headerRow);
+    leaderboardTable.appendChild(tableHeader);
+
+    // Create table body
+    const tableBody = document.createElement('tbody');
+
+    leaderboard.forEach((user, index) => {
+      const row = document.createElement('tr');
+
+      // Populate table cells with user details
+      const serialNoCell = document.createElement('td');
+      serialNoCell.textContent = index + 1;
+      row.appendChild(serialNoCell);
+
+      const nameCell = document.createElement('td');
+      nameCell.textContent = user.name;
+      row.appendChild(nameCell);
+
+      const totalExpenseCell = document.createElement('td');
+      totalExpenseCell.textContent = `$${user.total_cost}`;
+      row.appendChild(totalExpenseCell);
+
+      tableBody.appendChild(row);
+    });
+
+    leaderboardTable.appendChild(tableBody);
+    leaderboardContainer.appendChild(leaderboardTable);
+  }
   function updateUIForPremiumUser(isPremium) {
+    const showLeaderboardBtn = document.getElementById('showLeaderboardBtn');
+    const buyPremiumBtn = document.getElementById('buyPremiumBtn');
+    const premiumMessage = document.getElementById('premiumMessage');
+  
     if (isPremium) {
       // Hide the Buy Premium button and display the premium message
-      document.getElementById('buyPremiumBtn').style.display = 'none';
-      document.getElementById('premiumMessage').style.display = 'block';
+      buyPremiumBtn.style.display = 'none';
+      premiumMessage.style.display = 'block';
+  
+      // Show the Show Leaderboard button for premium users
+      showLeaderboardBtn.style.display = 'block';
     } else {
-      // Show the Buy Premium button and hide the premium message
-      document.getElementById('buyPremiumBtn').style.display = 'block';
-      document.getElementById('premiumMessage').style.display = 'none';
+      // Show the Buy Premium button and hide the premium message and Show Leaderboard button
+      buyPremiumBtn.style.display = 'block';
+      premiumMessage.style.display = 'none';
+  
+      // Hide the Show Leaderboard button for non-premium users
+      showLeaderboardBtn.style.display = 'none';
     }
   }
-
   // Function to check and update premium status on page load
   async function checkAndUpdatePremiumStatus() {
     try {
@@ -232,4 +289,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
    // Fetch initial expenses on page load
    fetchExpenses();
+
+   async function fetchLeaderboard() {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:3000/premium/showLeaderBoard', { headers: { "Authorization": token } });
+
+      if (response.data) {
+        displayLeaderboard(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+      // Handle the error or provide user feedback
+    }
+  }
+  document.getElementById('showLeaderboardBtn').addEventListener('click', function () {
+    // Call the function to fetch and display the leaderboard
+    fetchLeaderboard();
+
+    // Show the leaderboard container
+    leaderboardContainer.style.display = 'block';
+});
 });

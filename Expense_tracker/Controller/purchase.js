@@ -1,7 +1,10 @@
 const Razorpay = require('razorpay');
 const Order = require('../Model/orders')
 const userController = require('./user')
+const jwt = require('jsonwebtoken');
 
+RAZORPAY_KEY_ID = "rzp_test_qLprpUg3NwK5j9"
+RAZORPAY_KEY_SECRET = "I8HjmT88Q84As9c4S0i9ORgr"
 
 const purchasepremium =async (req, res) => {
     try {
@@ -27,6 +30,7 @@ const purchasepremium =async (req, res) => {
         res.status(403).json({ message: 'Sometghing went wrong', error: err})
     }
 }
+
 const TOKEN_SECRET = 'e7!dMxT#c?UvJ7!PAn*FKNtXAQsfmz!6';
 
 // Function to generate access token
@@ -43,7 +47,7 @@ const updateTransactionStatus = async (req, res ) => {
         const promise2 =  req.user.update({ ispremiumuser: true }) 
 
         Promise.all([promise1, promise2]).then(()=> {
-            return res.status(202).json({sucess: true, message: "Transaction Successful", token: userController.generateAccessToken(userId,undefined , true) });
+            return res.status(202).json({sucess: true, message: "Transaction Successful", token: generateAccessToken(userId,undefined , true) });
         }).catch((error ) => {
             throw new Error(error)
         })
@@ -52,7 +56,7 @@ const updateTransactionStatus = async (req, res ) => {
                 
     } catch (err) {
         console.log(err);
-        res.status(403).json({ errpr: err, message: 'Sometghing went wrong' })
+        res.status(403).json({ errpr: err, message: 'Something went wrong' })
 
     }
 } 

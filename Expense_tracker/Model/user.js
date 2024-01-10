@@ -22,7 +22,11 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  ispremiumuser: DataTypes.BOOLEAN
+  ispremiumuser: DataTypes.BOOLEAN,
+  totalExpenses: {
+    type: DataTypes.FLOAT, 
+    defaultValue: 0, 
+  },
 });
 
 // User.hasMany(Expense);

@@ -5,15 +5,8 @@ const sequelize = require('../util/database');
 const getUserLeaderBoard = async (req, res) => {
     try {
         const leaderboardofusers = await User.findAll({
-            attributes: ['id', 'name', [sequelize.fn('sum', sequelize.col('Expenses.expense')), 'total_cost']],
-            include: [
-                {
-                    model: Expense,
-                    attributes: []
-                }
-            ],
-            group: ['user.id'],  // Corrected: use the alias 'user.id'
-            order: [['total_cost', 'DESC']]
+            attributes: ['id', 'name', 'totalExpenses'], // Updated to use totalExpenses
+            order: [['totalExpenses', 'DESC']]
         });
 
         res.status(200).json(leaderboardofusers);

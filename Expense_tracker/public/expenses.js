@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
       row.appendChild(nameCell);
 
       const totalExpenseCell = document.createElement('td');
-      totalExpenseCell.textContent = `$${user.total_cost}`;
+      totalExpenseCell.textContent = `$${user.totalExpenses}`;
       row.appendChild(totalExpenseCell);
 
       tableBody.appendChild(row);

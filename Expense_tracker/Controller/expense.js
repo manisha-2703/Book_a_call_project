@@ -1,8 +1,10 @@
 const Expense = require('../Model/expense');
+const User = require('../Model/user');
+const sequelize = require('../util/database');
 
 exports.getAllExpenses = async (req, res) => {
   try {
-    const expenses = await Expense.findAll({ where : { UserId: req.user.id}});
+    const expenses = await Expense.findAll({ where: { UserId: req.user.id } });
     res.json(expenses);
   } catch (error) {
     console.error('Error fetching expenses:', error);
@@ -10,31 +12,57 @@ exports.getAllExpenses = async (req, res) => {
   }
 };
 
-
 exports.addExpense = async (req, res) => {
   const { expense, description, category } = req.body;
   console.log('Received expense data:', { expense, description, category });
-  
-  try {
-    const newExpense = await Expense.create({ expense, description, category, UserId: req.user.id });
-    console.log('New expense created:', newExpense);
-    res.json(newExpense);
-  } catch (error) {
-    console.error('Error adding expense:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-  
-};
 
+  let t; 
+
+  try {
+    t = await sequelize.transaction(); 
+
+    const newExpense = await Expense.create(
+      { expense, description, category, UserId: req.user.id },
+      { transaction: t }
+    );
+    console.log('New expense created:', newExpense);
+
+    const userId = req.user.id;
+    const totalExpenses = await Expense.sum('expense', { where: { UserId: userId }, transaction: t });
+
+    await User.update({ totalExpenses }, { where: { id: userId }, transaction: t });
+
+    await t.commit(); 
+
+    res.status(201).json(newExpense);
+  } catch (err) {
+    console.error(err);
+    if (t) await t.rollback();
+    res.status(500).json(err);
+  }
+};
 
 exports.deleteExpense = async (req, res) => {
   const { id } = req.params;
+  let t;
 
   try {
-    await Expense.destroy({ where: { id } });
+    t = await sequelize.transaction();
+
+    const deletedExpense = await Expense.findByPk(id, { transaction: t });
+
+    await Expense.destroy({ where: { id }, transaction: t });
+
+    const userId = req.user.id;
+    const totalExpenses = await Expense.sum('expense', { where: { UserId: userId }, transaction: t });
+
+    await User.update({ totalExpenses }, { where: { id: userId }, transaction: t });
+
+    await t.commit();
     res.json({ message: 'Expense deleted successfully' });
   } catch (error) {
     console.error('Error deleting expense:', error);
+    if (t) await t.rollback();
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -44,14 +72,14 @@ exports.updateExpense = async (req, res) => {
   const { expense, description, category } = req.body;
 
   try {
-      const updatedExpense = await Expense.update(
-          { expense, description, category },
-          { where: { id } }
-      );
+    const updatedExpense = await Expense.update(
+      { expense, description, category },
+      { where: { id } }
+    );
 
-      res.json(updatedExpense);
+    res.json(updatedExpense);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };

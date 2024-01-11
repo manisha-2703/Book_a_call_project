@@ -21,7 +21,10 @@ body {
     background-size: cover;
     
 }
-
+a{
+	text-decoration: none;
+	color: antiquewhite;
+}
 
 .title {
 	font-weight: 400;
@@ -53,6 +56,7 @@ body {
 	font-size: 22px;
 	border: none;
 	outline: none;
+    color: rgb(255, 255, 255);
 	background-color: transparent;
 	position: relative;
 	cursor: pointer;

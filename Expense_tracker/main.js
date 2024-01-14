@@ -8,12 +8,16 @@ const purchaseRoutes = require('./Routes/purchase');
 const premiumRoutes=require('./Routes/premiumFeature');
 const passwordRoutes=require('./Routes/password');
 const app = express();
+const dotenv = require('dotenv');
+// get config vars
+dotenv.config();
 
 app.use(express.json());
 
 const Expense = require('./Model/expense');
 const User = require('./Model/user');
-const Order=require('./Model/orders')
+const Order=require('./Model/orders');
+const Forgotpassword=require('./Model/password');
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -30,6 +34,9 @@ Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+Forgotpassword.belongsTo(User);
+User.hasMany(Forgotpassword);
 
 
 sequelize.sync()

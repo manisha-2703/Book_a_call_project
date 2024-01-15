@@ -1,10 +1,15 @@
 
-
 document.addEventListener('DOMContentLoaded', function () {
   const submitButton = document.getElementById('submitBtn');
   const expenseTable = document.getElementById('expenseTable');
   const editForm = document.getElementById('editExpenseForm');
   const leaderboardContainer = document.getElementById('leaderboardContainer');
+  const showLeaderboardBtn = document.getElementById('showLeaderboardBtn');
+  const homeBtn = document.getElementById('home');
+  const buyPremiumBtn = document.getElementById('buyPremiumBtn');
+  const premiumMessage = document.getElementById('premiumMessage');
+  const report = document.getElementById('report');
+  const expenseForm=document.getElementById('expenseForm');
 
   function displayExpenses(expenses) {
     // Clear existing table content
@@ -70,12 +75,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function displayLeaderboard(leaderboard) {
-    // Clear existing leaderboard content
     leaderboardContainer.innerHTML = '';
 
     // Create leaderboard table
     const leaderboardTable = document.createElement('table');
     leaderboardTable.classList.add('leaderboard-table');
+    leaderboardTable.style.borderCollapse = 'collapse'; // Add this line to collapse borders
 
     // Create table header
     const tableHeader = document.createElement('thead');
@@ -85,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
     headerNames.forEach(name => {
       const headerCell = document.createElement('th');
       headerCell.textContent = name;
+      headerCell.style.border = '1px solid #ddd'; // Add border style
       headerRow.appendChild(headerCell);
     });
 
@@ -100,14 +106,17 @@ document.addEventListener('DOMContentLoaded', function () {
       // Populate table cells with user details
       const serialNoCell = document.createElement('td');
       serialNoCell.textContent = index + 1;
+      serialNoCell.style.border = '1px solid #ddd'; // Add border style
       row.appendChild(serialNoCell);
 
       const nameCell = document.createElement('td');
       nameCell.textContent = user.name;
+      nameCell.style.border = '1px solid #ddd'; // Add border style
       row.appendChild(nameCell);
 
       const totalExpenseCell = document.createElement('td');
       totalExpenseCell.textContent = `$${user.totalExpenses}`;
+      totalExpenseCell.style.border = '1px solid #ddd'; // Add border style
       row.appendChild(totalExpenseCell);
 
       tableBody.appendChild(row);
@@ -117,24 +126,18 @@ document.addEventListener('DOMContentLoaded', function () {
     leaderboardContainer.appendChild(leaderboardTable);
   }
   function updateUIForPremiumUser(isPremium) {
-    const showLeaderboardBtn = document.getElementById('showLeaderboardBtn');
-    const buyPremiumBtn = document.getElementById('buyPremiumBtn');
-    const premiumMessage = document.getElementById('premiumMessage');
   
     if (isPremium) {
       // Hide the Buy Premium button and display the premium message
       buyPremiumBtn.style.display = 'none';
       premiumMessage.style.display = 'block';
-  
-      // Show the Show Leaderboard button for premium users
       showLeaderboardBtn.style.display = 'block';
+      report.style.display = 'block';
     } else {
-      // Show the Buy Premium button and hide the premium message and Show Leaderboard button
       buyPremiumBtn.style.display = 'block';
       premiumMessage.style.display = 'none';
-  
-      // Hide the Show Leaderboard button for non-premium users
       showLeaderboardBtn.style.display = 'none';
+      report.style.display = 'none';
     }
   }
   // Function to check and update premium status on page load
@@ -224,6 +227,31 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hide the edit form
     editForm.style.display = 'none';
   });
+
+  showLeaderboardBtn.addEventListener('click', function () {
+    // Call the function to fetch and display the leaderboard
+    fetchLeaderboard();
+
+    // Hide the expenses form and show the leaderboard container
+    expenseTable.style.display = 'none';
+    editForm.style.display = 'none';
+    expenseForm.style.display = 'none';
+    leaderboardContainer.style.display = 'block';
+  });
+
+  // Event listener for the "Home" button
+  homeBtn.addEventListener('click', function () {
+    // Show the expenses form and hide the leaderboard container
+    expenseForm.style.display = 'block';
+    expenseTable.style.display = 'block';
+    editForm.style.display = 'none';
+    leaderboardContainer.style.display = 'none';
+  });
+  document.getElementById('report').addEventListener('click', function () {
+    // Redirect to the report page
+    window.location.href = 'report.html';
+  });
+
 
   // Function to send a request to update the expense
   function updateExpense() {

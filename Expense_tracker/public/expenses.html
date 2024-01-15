@@ -6,9 +6,18 @@
     <title>Expense Tracker</title>
     <!-- Add Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="expenses.css"/>
 </head>
 <body>
+    <header>
     
+    <button id="home">Home </button>
+    <button id="showLeaderboardBtn" style="display: none;">Show Leaderboard</button>
+    <button id="report" style="display: none;">Report</button>
+    <button id="premiumMessage" style="display: none;">Premium user</button>
+    <button id="buyPremiumBtn">Buy Premium</button>
+</header>
+
     <div class="container mt-5">
         <div class="form-wrap">
             <form id="expenseForm">
@@ -24,23 +33,21 @@
                     <label for="category">Category:</label>
                     <select class="form-control" id="category" name="category" required>
                         <option value="" disabled selected>Select a category</option>
-                        <option value="movie">Movie</option>
+                        <option value="entertainment">Entertainment</option>
                         <option value="electricity">Electricity</option>
                         <option value="food">Food</option>
                         <option value="vacation">Vacation</option>
                         <option value="rent">Rent Charges</option>
+                        <option value="salary">Salary/Income</option>
+                        <option value="recharge">Recharge</option>
+                        <option value="gas">Gas Bill</option>
+                        <option value="others">Others</option>
                     </select>
                 </div>
                 <button type="button" class="btn btn-primary" id="submitBtn">Add Expense</button>
             </form>
-            <p id="premiumMessage" style="display: none;">You are a premium user</p>
-            <button id="showLeaderboardBtn" style="display: none;">Show Leaderboard</button>
-
-            <div id="leaderboardContainer" style="display: none;">
-            <h2>Leaderboard</h2>
-            <table class="table" id="leaderboardTable"></table>
-            </div>
-            <button id="buyPremiumBtn">Buy Premium</button>
+           
+  
 
             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -70,9 +77,11 @@
                 <button type="button" class="btn btn-primary" id="updateBtn">Update Expense</button>
                 <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
             </form>
-            <table class="table" id="expenseTable"></table>
-
-            
+            <table class="table" id="expenseTable"></table>  
+            <div id="leaderboardContainer" style="display: none;">
+                <h2>Leaderboard</h2>
+                <table class="table" id="leaderboardTable"></table>
+                </div>  
 
         </div>
     </div>

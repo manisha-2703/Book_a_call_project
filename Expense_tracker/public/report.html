@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day-to-Day Expenses</title>
+    <link rel="stylesheet" href="expenses.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <header>
+        <button id="home">Back Home</button>
+    </header>
+
+    <div class="container mt-5">
+        <h1>Day-to-Day Expenses</h1>
+        <h2 id="monthHeading">January 2024</h2>
+        
+        <table class="table" id="reportTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Expenses</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table rows will be added dynamically using JavaScript -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">Total Salary</td>
+                    <td id="totalSalaryExpenses">0</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Total Expenses</td>
+                    <td id="totalExpensesWithoutSalary">0</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Savings</td>
+                    <td id="savings">0</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div id="yearlyReportContainer" style="display: none;">
+            <h2>Yearly Report</h2>
+            <table class="table" id="yearlyReportTable">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Total Salary</th>
+                        <th>Expenses (Without Salary)</th>
+                        <th>Savings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will be added dynamically using JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="report.js"></script>
+</body>
+</html>

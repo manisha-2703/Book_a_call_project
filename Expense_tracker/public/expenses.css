@@ -1,0 +1,16 @@
+header{
+    color: beige;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: rgb(93, 81, 81);
+    height: 10vh;
+}
+header button{
+    color: beige;
+    background-color: transparent;
+    border: 0cap;
+}
+
+#leaderboardContainer{
+    width:80vw;
+}

@@ -10,8 +10,33 @@ document.addEventListener('DOMContentLoaded', function () {
   const premiumMessage = document.getElementById('premiumMessage');
   const report = document.getElementById('report');
   const expenseForm=document.getElementById('expenseForm');
+  const paginationDiv = document.getElementById('pagination');
 
-  function displayExpenses(expenses) {
+  function createPaginationControls(currentPage, totalPages) {
+    // Create pagination controls
+    paginationDiv.innerHTML = '';
+
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Previous';
+    prevButton.addEventListener('click', () => handlePagination(currentPage - 1));
+    paginationDiv.appendChild(prevButton);
+
+    const pageInfo = document.createElement('span');
+    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    paginationDiv.appendChild(pageInfo);
+
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.addEventListener('click', () => handlePagination(currentPage + 1));
+    paginationDiv.appendChild(nextButton);
+
+    // Call this function from fetchExpenses
+    function handlePagination(pageNumber) {
+      fetchExpenses(pageNumber);
+    }
+  }
+
+  function displayExpenses(expenses, currentPage, totalPages) {
     // Clear existing table content
     expenseTable.innerHTML = '';
 
@@ -37,41 +62,53 @@ document.addEventListener('DOMContentLoaded', function () {
     // Create table body
     const tableBody = document.createElement('tbody');
 
-    expenses.forEach((expense, index) => {
-      const row = document.createElement('tr');
+    if (expenses.length === 0) {
+      const noDataMessage = document.createElement('tr');
+      const noDataCell = document.createElement('td');
+      noDataCell.colSpan = 4; // Span all columns
+      noDataCell.textContent = 'No expenses available.';
+      noDataMessage.appendChild(noDataCell);
+      tableBody.appendChild(noDataMessage);
+    } else {
+      expenses.forEach((expense, index) => {
+        const row = document.createElement('tr');
 
-      // Populate table cells with expense details
-      const expenseCell = document.createElement('td');
-      expenseCell.textContent = `$${expense.expense}`;
-      row.appendChild(expenseCell);
+        // Populate table cells with expense details
+        const expenseCell = document.createElement('td');
+        expenseCell.textContent = `$${expense.expense}`;
+        row.appendChild(expenseCell);
 
-      const descriptionCell = document.createElement('td');
-      descriptionCell.textContent = expense.description;
-      row.appendChild(descriptionCell);
+        const descriptionCell = document.createElement('td');
+        descriptionCell.textContent = expense.description;
+        row.appendChild(descriptionCell);
 
-      const categoryCell = document.createElement('td');
-      categoryCell.textContent = expense.category;
-      row.appendChild(categoryCell);
+        const categoryCell = document.createElement('td');
+        categoryCell.textContent = expense.category;
+        row.appendChild(categoryCell);
 
-      // Create action cell with edit and delete buttons
-      const actionCell = document.createElement('td');
+        // Create action cell with edit and delete buttons
+        const actionCell = document.createElement('td');
 
-      const editButton = document.createElement('button');
-      editButton.textContent = 'Edit';
-      editButton.addEventListener('click', () => editExpense(expense));
-      actionCell.appendChild(editButton);
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => editExpense(expense));
+        actionCell.appendChild(editButton);
 
-      const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Delete';
-      deleteButton.addEventListener('click', () => deleteExpense(expense.id));
-      actionCell.appendChild(deleteButton);
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteExpense(expense.id));
+        actionCell.appendChild(deleteButton);
 
-      row.appendChild(actionCell);
+        row.appendChild(actionCell);
 
-      tableBody.appendChild(row);
-    });
+        tableBody.appendChild(row);
+      });
+    }
 
     expenseTable.appendChild(tableBody);
+
+    // Create pagination controls
+    createPaginationControls(currentPage, totalPages);
   }
 
   function displayLeaderboard(leaderboard) {
@@ -180,20 +217,30 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .catch(error => console.error('Error adding expense:', error));
   }  
-  function fetchExpenses() {
+  function fetchExpenses(pageNumber = 1) {
     const token = localStorage.getItem('token');
-    axios.get('http://localhost:3000/expenses', { headers: { "Authorization": token } })
+    const pageSize = 10; // Adjust this based on your desired page size
+  
+    axios.get(`http://localhost:3000/expenses?page=${pageNumber}&pageSize=${pageSize}`, { headers: { "Authorization": token } })
       .then(response => {
-        if (!response.data) {
-          throw new Error('No data received from the server');
+        console.log('Expense API Response:', response); // Add this log statement
+  
+        if (!response.data || !Array.isArray(response.data)) {
+          throw new Error('Invalid data received from the server');
         }
-        displayExpenses(response.data);
+  
+        const expenses = response.data;
+        const currentPage = pageNumber; // Assuming the page number matches the current page
+        const totalPages = Math.ceil(expenses.length / pageSize);
+  
+        displayExpenses(expenses, currentPage, totalPages);
       })
       .catch(error => {
         console.error('Error fetching expenses:', error);
         // Handle the error or provide user feedback
       });
   }
+  
   
 
   function deleteExpense(expenseId) {
@@ -248,9 +295,9 @@ document.addEventListener('DOMContentLoaded', function () {
     leaderboardContainer.style.display = 'none';
   });
   document.getElementById('report').addEventListener('click', function () {
-    // Redirect to the report page
-    window.location.href = 'report.html';
-  });
+      // Redirect to the report page
+      window.location.href = 'report.html';
+    });
 
 
   // Function to send a request to update the expense

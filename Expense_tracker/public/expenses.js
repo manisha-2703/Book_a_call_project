@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const report = document.getElementById('report');
   const expenseForm=document.getElementById('expenseForm');
   const paginationDiv = document.getElementById('pagination');
+  const expensesPerPageSelect = document.getElementById('expensesPerPage');
+  expensesPerPageSelect.addEventListener('change', function () {
+    // Fetch expenses with the new preferences
+    fetchExpenses(1);
+  });
 
   function createPaginationControls(currentPage, totalPages) {
     // Create pagination controls
@@ -219,24 +224,24 @@ document.addEventListener('DOMContentLoaded', function () {
   }  
   function fetchExpenses(pageNumber = 1) {
     const token = localStorage.getItem('token');
-    const pageSize = 10; // Adjust this based on your desired page size
+    const pageSize = expensesPerPageSelect.value;
   
     axios.get(`http://localhost:3000/expenses?page=${pageNumber}&pageSize=${pageSize}`, { headers: { "Authorization": token } })
       .then(response => {
-        console.log('Expense API Response:', response); // Add this log statement
+        console.log('Expense API Response:', response);
   
         if (!response.data || !Array.isArray(response.data)) {
           throw new Error('Invalid data received from the server');
         }
   
         const expenses = response.data;
-        const currentPage = pageNumber; // Assuming the page number matches the current page
+        const currentPage = pageNumber;
         const totalPages = Math.ceil(expenses.length / pageSize);
   
         displayExpenses(expenses, currentPage, totalPages);
       })
       .catch(error => {
-        console.error('Error fetching expenses:', error);
+        console.error('Error fetching expenses:', error.message);
         // Handle the error or provide user feedback
       });
   }

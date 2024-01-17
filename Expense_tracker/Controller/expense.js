@@ -3,13 +3,21 @@ const User = require('../Model/user');
 const sequelize = require('../util/database');
 
 exports.getAllExpenses = async (req, res) => {
-  try {
-    const expenses = await Expense.findAll({ where: { UserId: req.user.id } });
-    res.json(expenses);
-  } catch (error) {
-    console.error('Error fetching expenses:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+  const { page = 1, pageSize = 10 } = req.query;
+const parsedPageSize = parseInt(pageSize, 10) || 10; // Ensure it's parsed as an integer, default to 10 if not a valid number
+
+try {
+  const expenses = await Expense.findAll({
+    where: { UserId: req.user.id },
+    limit: parsedPageSize,
+    offset: (page - 1) * parsedPageSize,
+  });
+
+  res.json(expenses);
+} catch (error) {
+  console.error('Error fetching expenses:', error);
+  res.status(500).json({ error: 'Internal Server Error' });
+}
 };
 
 exports.addExpense = async (req, res) => {

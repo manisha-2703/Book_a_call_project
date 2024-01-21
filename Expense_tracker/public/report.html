@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Day-to-Day Expenses</title>
-    <link rel="stylesheet" href="expenses.css"/>
+    <link rel="stylesheet" href="report.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -13,8 +13,8 @@
     </header>
 
     <div class="container mt-5">
-        <h1>Day-to-Day Expenses</h1>
-        <h2 id="monthHeading">January 2024</h2>
+        <h2>Day-to-Day Expenses</h2>
+        <h3 id="monthHeading">January 2024</h3>
         
         <table class="table" id="reportTable">
             <thead>
@@ -43,6 +43,7 @@
                 </tr>
             </tfoot>
         </table>
+        <button class="btn btn-primary" id="showYearlyReportBtn">Show Yearly Report</button>
         <div id="yearlyReportContainer" style="display: none;">
             <h2>Yearly Report</h2>
             <table class="table" id="yearlyReportTable">
@@ -59,9 +60,23 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Add a download button -->
+        <button class="btn btn-primary" id="downloadExpensesBtn" disabled>Download Expenses</button>
+
+        <!-- Display a list of downloaded files -->
+        <div id="downloadedFilesList">
+            <h2>Downloaded Files</h2>
+            <ul id="filesList"></ul>
+        </div>
     </div>
+    <footer>
+        <p>
+            Contact Us: expensetracker@gmail.com
+        </p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script defer src="report.js"></script>
+    <script src="report.js"></script>
 </body>
 </html>

@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const savings = document.getElementById('savings');
     const yearlyReportContainer = document.getElementById('yearlyReportContainer');
     const yearlyReportTableBody = document.querySelector('#yearlyReportTable tbody');
+    const downloadExpensesBtn = document.getElementById('downloadExpensesBtn');
+    const filesList = document.getElementById('filesList');
 
     // Fetch and display expenses for the current month
     fetchExpensesForCurrentMonth();
@@ -17,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const currentDate = new Date();
             const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
             const currentYear = currentDate.getFullYear();
+
             const response = await axios.get(`http://localhost:3000/expenses?month=${currentMonth}&year=${currentYear}`, {
                 headers: { "Authorization": token }
             });
@@ -62,11 +65,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 totalSalaryExpenses.textContent = `$${totalSalary}`;
                 totalExpensesWithoutSalary.textContent = `$${totalWithoutSalary}`;
                 savings.textContent = `$${totalSavings}`;
+
+                // Enable download button for premium users
+                const isPremiumUser = true; // Replace with your premium user check logic
+                downloadExpensesBtn.disabled = !isPremiumUser;
             }
         } catch (error) {
             console.error('Error fetching expenses for the report:', error);
         }
     }
+
     // Fetch and display yearly expenses
     fetchYearlyExpenses();
 
@@ -129,9 +137,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('reportTable').style.display = 'none';
     });
 
-    // Add event listener for the "Home" button
-    document.getElementById('home').addEventListener('click', function () {
-        // Redirect to the home page
-        window.location.href = 'expenses.html';
+    // Add event listener for the "Download Expenses" button
+    downloadExpensesBtn.addEventListener('click', function () {
+        // Implement the logic to trigger the backend for downloading expenses
+        // Display the file URL in the frontend
+        const fileURL = 'https://example.com/path/to/downloaded/file.txt'; // Replace with the actual file URL
+        const listItem = document.createElement('li');
+        listItem.textContent = `File: ${fileURL}, Downloaded on: ${new Date().toLocaleString()}`;
+        filesList.appendChild(listItem);
     });
 });

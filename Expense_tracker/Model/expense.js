@@ -20,7 +20,13 @@ const Expense = sequelize.define('Expense', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
+}, {
+  timestamps: false, 
 });
 
 module.exports = Expense;
-

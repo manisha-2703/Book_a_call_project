@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
         
         console.log(response.data);
         login.click();
-        // Redirect to expenses page or handle it as needed
          
       })
       .catch(error => {

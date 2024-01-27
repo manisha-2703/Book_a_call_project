@@ -3,14 +3,12 @@ const Order = require('../Model/orders')
 const userController = require('./user')
 const jwt = require('jsonwebtoken');
 
-RAZORPAY_KEY_ID = "rzp_test_qLprpUg3NwK5j9"
-RAZORPAY_KEY_SECRET = "I8HjmT88Q84As9c4S0i9ORgr"
 
 const purchasepremium =async (req, res) => {
     try {
         var rzp = new Razorpay({
-            key_id: RAZORPAY_KEY_ID,
-            key_secret: RAZORPAY_KEY_SECRET
+            key_id: process.env.RAZORPAY_KEY_ID,
+            key_secret: process.env.RAZORPAY_KEY_SECRET
         })
         const amount = 2500;
 

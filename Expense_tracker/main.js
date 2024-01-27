@@ -1,6 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const helmet=require('helmet');
+const compression=require('compression');
+const morgan=require('morgan');
+const fs=require('fs');
 const sequelize = require('./util/database');
 const expenseRoutes = require('./Routes/expense');
 const userRoutes = require('./Routes/user');
@@ -18,8 +22,18 @@ const Expense = require('./Model/expense');
 const User = require('./Model/user');
 const Order=require('./Model/orders');
 const Forgotpassword=require('./Model/password');
+const DownloadedFile=require('./Model/report')
 
+const accessLogStream=fs.createWriteStream(
+    path.join(__dirname,'access.log'),
+    { flags:'a'}
+    
+    );
+
+app.use(helmet());
 app.use(cors());
+app.use(compression());
+app.use(morgan('combined',{stream:accessLogStream}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/expenses', expenseRoutes);
@@ -37,6 +51,9 @@ Order.belongsTo(User);
 
 Forgotpassword.belongsTo(User);
 User.hasMany(Forgotpassword);
+
+User.hasMany(DownloadedFile);
+DownloadedFile.belongsTo(User)
 
 
 sequelize.sync()

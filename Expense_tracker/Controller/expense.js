@@ -142,7 +142,6 @@ exports.getDownloadHistory = async (req, res) => {
     }
 };
 
-// Add this function to convert expenses to CSV
 function convertToCSV(expenses) {
     let csvContent = 'Expense,Description,Category\n';
     expenses.forEach((expense) => {

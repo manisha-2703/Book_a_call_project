@@ -89,8 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // Assuming downloadResponse.data contains the file URL
           const fileURL = response.data.fileURL;
-
-          // Display the file URL in the console for testing
           console.log('File URL:', fileURL);
 
           // Add the file URL to the files list

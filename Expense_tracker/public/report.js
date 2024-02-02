@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Fetch and display expenses for the current month
   fetchExpensesForCurrentMonth();
 
-  // Function to fetch and display expenses for the current month
+  
   async function fetchExpensesForCurrentMonth() {
       try {
           const token = localStorage.getItem('token');

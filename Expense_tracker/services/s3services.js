@@ -1,10 +1,9 @@
-
 const AWS = require('aws-sdk');
 
 function uploadToS3(data, filename) {
-    const BUCKET_NAME = 'expensetracker27';
-    const IAM_USER_KEY = 'AKIA2NX6B5KSWTMWWDH3'; // Fix typo in IAM_USER_KEY
-    const IAM_USER_SECRET = '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'; // Fix typo in IAM_USER_SECRET
+    const BUCKET_NAME = process.env.BUCKET_NAME;
+    const IAM_USER_KEY = process.env.IAM_USER_KEY;
+    const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
 
     let s3bucket = new AWS.S3({
         accessKeyId: IAM_USER_KEY,
@@ -15,16 +14,15 @@ function uploadToS3(data, filename) {
         Bucket: BUCKET_NAME,
         Key: filename,
         Body: data,
-        ACL: 'public-read', // Add a comma to separate properties
+        ACL: 'public-read',
     };
 
     return new Promise((resolve, reject) => {
         s3bucket.upload(params, (err, s3response) => {
             if (err) {
-                console.log('Something went wrong', err);
+                console.error('Something went wrong', err);
                 reject(err);
             } else {
-                // console.log('success', s3response);
                 resolve(s3response.Location);
             }
         });
@@ -32,4 +30,3 @@ function uploadToS3(data, filename) {
 }
 
 module.exports = uploadToS3;
-

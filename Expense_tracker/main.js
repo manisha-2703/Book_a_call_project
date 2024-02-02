@@ -5,6 +5,8 @@ const helmet=require('helmet');
 const compression=require('compression');
 const morgan=require('morgan');
 const fs=require('fs');
+const dotenv = require('dotenv');
+dotenv.config();
 const sequelize = require('./util/database');
 const expenseRoutes = require('./Routes/expense');
 const userRoutes = require('./Routes/user');
@@ -12,9 +14,7 @@ const purchaseRoutes = require('./Routes/purchase');
 const premiumRoutes=require('./Routes/premiumFeature');
 const passwordRoutes=require('./Routes/password');
 const app = express();
-const dotenv = require('dotenv');
-// get config vars
-dotenv.config();
+
 
 app.use(express.json());
 

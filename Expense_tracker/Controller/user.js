@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../Model/user');
 
-const TOKEN_SECRET = 'e7!dMxT#c?UvJ7!PAn*FKNtXAQsfmz!6';
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 // Function to generate access token
 function generateAccessToken(id) {

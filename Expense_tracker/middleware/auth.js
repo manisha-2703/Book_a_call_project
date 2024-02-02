@@ -6,6 +6,8 @@ const SECRET_KEY = 'e7!dMxT#c?UvJ7!PAn*FKNtXAQsfmz!6';
 const authenticate = async (req, res, next) => {
     try {
         const token = req.header('Authorization');
+        console.log('Token:', token);
+
         if (!token) {
             console.error('Token not provided');
             return res.status(401).json({ success: false, message: 'Unauthorized: Token not provided' });
@@ -23,7 +25,7 @@ const authenticate = async (req, res, next) => {
         req.user = foundUser;
         next();
     } catch (err) {
-        console.error('Authentication error:', err);
+        console.error('JWT Verification Error:', err.message);
         return res.status(401).json({ success: false, message: 'Unauthorized: Invalid token' });
     }
 };

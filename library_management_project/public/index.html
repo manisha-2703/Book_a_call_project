@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/public/styles.css">
+  <title>Library Management System</title>
+</head>
+<body>
+ <header>
+    <h1>Library Management System</h1>
+    <form id="searchForm">
+      <label for="search">Search Book:</label>
+      <input type="text" id="search" name="search" required>
+      <button type="button" onclick="borrowBook()">Search</button>
+    </form>
+  </header>
+  <h2>Books Borrowed :</h2>
+  <section id="booksBorrowed">
+    <!-- Borrowed books will be displayed here -->
+  </section>
+  <h2>Returned Books :</h2>
+  <section id="returnedBooks">
+    <!-- Returned books will be displayed here -->
+  </section>
+  <footer>
+    <p>Thank you &#127807 </p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script src="/public/script.js"></script>
+</body>
+</html>

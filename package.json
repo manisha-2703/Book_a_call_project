@@ -1,0 +1,25 @@
+{
+  "name": "sharpener-projects",
+  "version": "1.0.0",
+  "description": "",
+  "main": "first_node.js",
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon Node_js_first/first_node.js",
+    "start-server": "node Node_js_first/first_node.js"
+  },
+  "author": "Manisha",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "mysql2": "^3.6.5",
+    "pug": "^3.0.2",
+    "sequelize": "^6.35.1"
+  }
+}

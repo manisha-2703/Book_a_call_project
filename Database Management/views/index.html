@@ -1,0 +1,30 @@
+<!-- views/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database Management</title>
+</head>
+<body>
+  <h1>List of Tables</h1>
+  <ul id="tableList"></ul>
+
+  <h2>Create Table</h2>
+  <form id="createTableForm">
+    <label for="tableName">Table Name:</label>
+    <input type="text" id="tableName" name="tableName" required>
+
+    <label for="columns">Columns (comma-separated):</label>
+    <input type="text" id="columns" name="columns" required>
+
+    <label for="dataTypes">Data Types (comma-separated):</label>
+    <input type="text" id="dataTypes" name="dataTypes" required>
+
+    <button type="button" onclick="createTable()">Create Table</button>
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/public/script.js"></script>
+</body>
+</html>
